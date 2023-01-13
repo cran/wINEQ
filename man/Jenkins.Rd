@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Jenkins}
 \alias{Jenkins}
-\title{Jenkins and Cowell_and_Flachaire}
+\title{Jenkins, Cowell and Flachaire}
 \usage{
 Jenkins(X, W = rep(1, length(X)), alfa = 0.8)
 }
@@ -14,18 +14,46 @@ Jenkins(X, W = rep(1, length(X)), alfa = 0.8)
 \item{alfa}{is the Jenkins coefficient parameter}
 }
 \value{
-The value of Jenkins and Cowell_and_Flachaire coefficient.
+The value of Jenkins, Cowell and Flachaire coefficient.
 }
 \description{
-Computes Jenkins and Cowell_and_Flachaire inequality measure of a given variable taking into account weights.
+Computes Jenkins as well as Cowell and Flachaire inequality measure of a given variable taking into account weights.
+}
+\details{
+Jenkins coefficient is given by:
+\deqn{J=1-\sum_{j=0}^{K-1} (p_{j+1}-p_{j})(GL_{j}+GL_{j+1})}
+
+where GL is Generalized Lorenz curve.
+
+Cowell and Flachaire coefficient with alpha parameter is given by:
+\deqn{I(\alpha)=\frac{1}{\alpha(\alpha-1)}(\frac{1}{N}\sum_{i=1}^{N}s_{i}^{\alpha}-1)}
+
+for \eqn{\alpha \in (0,1)}, and
+\deqn{I(0)=-\frac{1}{N}\sum_{i=1}^{N} log(s_{i})}
+
+for \eqn{\alpha = 0}.
 }
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Jenkins(X)
 Jenkins(X,W)
+
+data(Tourism)
+#Jenkins, Cowell and Flachaire coefficients for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Jenkins(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
-F A Cowell: Measurement of Inequality, 2000, in A B Atkinson / F Bourguignon (Eds): Handbook of Income Distribution, Amsterdam
+Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
+
+Jenkins S. P. and P. J. Lambert: (1997) Three ‘I’s of Poverty Curves, with an Analysis of U.K. Poverty Trends
+
+Cowell F. A.: (2000) Measurement of Inequality, Handbook of Income Distribution
+
+Cowell F. A., Flachaire E.: (2017) Inequality with Ordinal Data
 }

@@ -1,13 +1,15 @@
-#' @title ineq.weighted
+#' @title Weighted inequality measures
 #'
 #' @description Calculates weighted mean and sum of X, and a set of inequality measures.
 #'
 #' @param X is a data vector
 #' @param W is a vector of weights
-#' @param Atkinson.e is a parameter for calculating the value of the Atkinson coefficient
-#' @param Jenkins.alfa is the Jenkins coefficient parameter
-#' @param Entropy.e is a entropy parameter
-#' @param Kolm.p is a Kolm parameter
+#' @param Atkinson.e is a parameter for Atkinson coefficient
+#' @param Jenkins.alfa is a parameter for Jenkins coefficient
+#' @param Entropy.e is a generalized entropy index parameter
+#' @param Kolm.p is a parameter for Kolm index
+#' @param Kolm.scale method of data standardization before computing
+#' @param Leti.norm (logical). If TRUE (default) then Leti index is divided by a maximum possible value
 #'
 #' @importFrom dplyr %>%
 #' @importFrom dplyr summarise
@@ -16,18 +18,32 @@
 #'
 #' @rdname ineq_weighted
 #'
+#' @details At this moment ineq.weighted calculates all inequality measures available in wINEQ packages.
+#' In future, selection of inequality measures will be available
+#'
 #' @examples
-#' X=c(1,2,3,4,5,6,7,8,9)
-#' W=c(2,5,6,7,3,4,5,2,5)
+#' library(dplyr)
+#' # Compare weighted and unweighted result.
+#' X=1:10
+#' W=1:10
+#' ineq.weighted(X)
+#' ineq.weighted(X,W)
+#'
+#'
+#' data(Tourism)
+#' # Results for Total expenditure with sample weights:
+#' X=Tourism$`Total expenditure`
+#' W=Tourism$`Sample weight`
+#' ineq.weighted(X)
 #' ineq.weighted(X,W)
 #'
 #' @export
-ineq.weighted=function(X,W=rep(1,length(X)),Atkinson.e=1,Jenkins.alfa=0.8,Entropy.e=0.5,Kolm.p=1)
+ineq.weighted=function(X,W=rep(1,length(X)),Atkinson.e=1,Jenkins.alfa=0.8,Entropy.e=0.5,Kolm.p=1,Kolm.scale='Standardization',Leti.norm=T)
 {
   n=length(X)
   data=data.frame(X,W)
-  data=data[is.na(X)==FALSE,]
-  if((min(X,na.rm = TRUE)==0)==TRUE){X=X+0.001*min(X[X>0])}
+  data=data[is.na(X)==F,]
+  if((min(X,na.rm = T)==0)==T){X=X+0.001*min(X[X>0])}
 
   result <- data %>%
     summarise(
@@ -38,11 +54,11 @@ ineq.weighted=function(X,W=rep(1,length(X)),Atkinson.e=1,Jenkins.alfa=0.8,Entrop
       Hoover=Hoover(X,W),
       Gini=Gini(X,W),
       Atkinson=Atkinson(X,W,Atkinson.e),
-      Kolm=Kolm(X,W),
+      Kolm=Kolm(X,W,scale = Kolm.scale,parameter = Kolm.p),
       Entropy=Entropy(X,W,parameter = Entropy.e),
       CoefVar=CoefVar(X,W),
       RicciSchutz=RicciSchutz(X,W),
-      Leti=Leti(X,W),
+      Leti=Leti(X,W,norm = Leti.norm),
       Allison_Foster=AF(X,W),
       Prop20_20=Prop20_20(X,W),
       Palma=Palma(X,W),
@@ -53,24 +69,27 @@ ineq.weighted=function(X,W=rep(1,length(X)),Atkinson.e=1,Jenkins.alfa=0.8,Entrop
 }
 
 
-#' @title ineq.weighted.boot
+#' @title Weighted inequality measures with bootstrap
 #'
 #' @description For weighted mean and weighted total of X as well as for each inequality measure, returns outputs from ineq.weighted and bootstrap outcomes: expected value, bias (in %), standard deviation, coefficient of variation, lower and upper bound of confidence interval.
 #'
 #' @param X is a data vector
 #' @param W is a vector of weights
-#' @param B numer of bootstrap samples.
-#' @param Atkinson.e is a parameter for calculating the value of the Atkinson coefficient
-#' @param Jenkins.alfa is the Jenkins coefficient parameter
-#' @param Entropy.e is a entropy parameter
-#' @param Kolm.p is a Kolm parameter
+#' @param B is a number of bootstrap samples.
+#' @param Atkinson.e is a parameter for Atkinson coefficient
+#' @param Jenkins.alfa is a parameter for Jenkins coefficient
+#' @param Entropy.e is a generalized entropy index parameter
+#' @param Kolm.p is a parameter for Kolm index
+#' @param Kolm.scale method of data standardization before computing
+#' @param Leti.norm (logical). If TRUE (default) then Leti index is divided by a maximum possible value
 #' @param keepSamples if TRUE, it returns bootstrap samples of data (Xb) and weights (Wb)
 #' @param keepMeasures if TRUE, it returns values of all inequality measures for each bootstrap sample
 #' @param conf.alpha significance level for confidence interval
 #' @param calib.boot if FALSE, then naive bootstrap is performed, calibrated bootstrap elsewhere
-#' @param Xs matrix of calibration variables
-#' @param total vector of population totals
+#' @param Xs matrix of calibration variables. By default it is a vector of 1's, applied if calib.boot is TRUE
+#' @param total vector of population totals. By default it is a sum of weights, applied if calib.boot is TRUE
 #' @param calib.method weights' calibration method for function calib (sampling)
+#' @param bounds vector of bounds for the g-weights used in the truncated and logit methods; 'low' is the smallest value and 'upp' is the largest value
 #'
 #' @importFrom stats sd
 #' @importFrom stats quantile
@@ -80,17 +99,32 @@ ineq.weighted=function(X,W=rep(1,length(X)),Atkinson.e=1,Jenkins.alfa=0.8,Entrop
 #'
 #' @rdname ineq_weighted_boot
 #'
+#' @details At this moment ineq.weighted.boot calculates all inequality measures available in wINEQ packages.
+#' In future, selection of inequality measures will be available. By default, naive bootstrap is performed, that is no weights calibration is conducted.
+#' You can choose calibrated bootstrap to calibrate weights with respect to proided variables (Xs) and totals (total).
+#' Confidence interval is simply derived with quantile of order \eqn{\alpha} and \eqn{1-\alpha} where \eqn{\alpha} is a significance level for confidence interval.
+#'
 #' @examples
-#' X=c(1,2,3,4,5,6,7,8,9)
-#' W=c(2,5,6,7,3,4,5,2,5)
+#' library(sampling);library(dplyr)
+#' # Compare weighted and unweighted result.
+#' X=1:10
+#' W=1:10
+#' ineq.weighted.boot(X)
 #' ineq.weighted.boot(X,W)
 #'
+#'
+#' data(Tourism)
+#' # Bootstrap results for Total expenditure with sample weights:
+#' X=Tourism$`Total expenditure`
+#' W=Tourism$`Sample weight`
+#' ineq.weighted.boot(X[1:30],W[1:30],B=50)
+#'
 #' @export
-ineq.weighted.boot=function(X,W=rep(1,length(X)),B=10,
-                            Atkinson.e=1,Jenkins.alfa=0.8,Entropy.e=0.5,Kolm.p=1,
+ineq.weighted.boot=function(X,W=rep(1,length(X)),B=100,
+                            Atkinson.e=1,Jenkins.alfa=0.8,Entropy.e=0.5,Kolm.p=1,Kolm.scale='Standardization',Leti.norm=T,
                             keepSamples=FALSE,keepMeasures=FALSE,conf.alpha=0.05,
                             calib.boot=FALSE,
-                            Xs=rep(1,length(X)),total=sum(W), calib.method='truncated'
+                            Xs=rep(1,length(X)),total=sum(W), calib.method='truncated',bounds=c(low=0,upp=10)
 )
 {
   Z=sample(1:length(X),size = B*length(X),replace = TRUE,prob = 1/W)
@@ -100,7 +134,7 @@ ineq.weighted.boot=function(X,W=rep(1,length(X)),B=10,
   {
     for(i in seq_along(Wb))
     {
-      Wb[,i]=Wb[,i]*calib(Xs = Xs,d = Wb[,i],total = total,method = calib.method)
+      Wb[,i]=Wb[,i]*calib(Xs = Xs,d = Wb[,i],total = total,method = calib.method,bounds=bounds)
     }
   }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Entropy}
 \alias{Entropy}
-\title{Entropy}
+\title{Generalized entropy index}
 \usage{
 Entropy(X, W = rep(1, length(X)), parameter = 0.5, na.rm = TRUE)
 }
@@ -16,17 +16,34 @@ Entropy(X, W = rep(1, length(X)), parameter = 0.5, na.rm = TRUE)
 \item{na.rm}{logical, should missing values (NAs) be removed prior to computations? If set to FALSE the computations yield NA}
 }
 \value{
-The value of Entropy coefficient.
+The value of generalized entropy index
 }
 \description{
-Computes Entropy inequality measure of a given variable taking into account weights.
+Computes generalized entropy index of a given variable taking into account weights.
+}
+\details{
+Entropy coefficient with respect to parameter \eqn{\alpha} is equal to Theil_L(X,W)  whenever \eqn{\alpha=0},
+is equal to Theil_T(X,W) whenever \eqn{\alpha=1}, and whenever \eqn{\alpha \in (0,1)} we have
+\deqn{GE(\alpha) = \frac{1}{\alpha(\alpha-1)W}\sum_{i=1}^{n}w_{i}\left(\left(\frac{x_{i}}{\mu}\right)^\alpha-1\right)}
+where \eqn{W} is a sum of weights and \eqn{\mu} is the arithmetic mean of \eqn{x_{1},...,x_{n}}.
 }
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Entropy(X)
 Entropy(X,W)
+
+data(Tourism)
+# Generalized entropy index for Total expenditure with sample weights:
+X= Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Entropy(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Shorrocks A. F.: (1980) The Class of Additively Decomposable Inequality Measures. Econometrica
+
+Pielou E.C.: (1966) The measurement of diversity in different types of biological collections. Journal of Theoretical Biology
 }

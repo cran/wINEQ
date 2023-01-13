@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Gini}
 \alias{Gini}
-\title{Gini}
+\title{Gini coefficient}
 \usage{
 Gini(X, W = rep(1, length(X)))
 }
@@ -15,14 +15,33 @@ Gini(X, W = rep(1, length(X)))
 The value of Gini coefficient.
 }
 \description{
-Computes Gini inequality measure of a given variable taking into account weights.
+Computes Gini coefficient of a given variable taking into account weights.
+}
+\details{
+Gini coefficient is given by:
+\deqn{G = \frac{ \sum_{i=1}^n \sum_{j=1}^n \mid x_{i} - x_{j} \mid}{2n^{2} \overline{x}}}
 }
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Gini(X)
 Gini(X,W)
+
+data(Tourism)
+#Gini coefficient for Total expenditure with sample weights:
+X= Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Gini(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
+
+Dixon P. M., Weiner, J., Mitchell-Olds, T., and Woodley, R.: (1987) Bootstrapping the Gini Coefficient of Inequality. Ecology , Volume 68 (5)
+
+Firebaugh G.: (1999) Empirics of World Income Inequality, American Journal of Sociology
+
+Deininger K.; Squire L.: (1996) A New Data Set Measuring Income Inequality, The World Bank Economic Review, Vol. 10, No. 3
 }

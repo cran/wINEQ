@@ -12,18 +12,36 @@ Theil_T(X, W = rep(1, length(X)))
 \item{W}{is a vector of weights}
 }
 \value{
-The value of Theil_T coefficient.
+The value of \code{Theil_T} coefficient.
 }
 \description{
-Computes Theil_T inequality measure of a given variable taking into account weights.
+Computes \code{Theil_T} inequality measure of a given variable taking into account weights.
+}
+\details{
+Theil T index is defined as:
+\deqn{T_{T} =  T_{\alpha=1} =  \frac{1}{N}  \sum_{i=1}^N  \frac{ x_{i} }{\mu} ln \big( \frac{ x_{i} }{\mu} \big)}
+where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
 }
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Theil_T(X)
 Theil_T(X,W)
+
+data(Tourism)
+# Theil T coefficient for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Theil_T(X,W)
+
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
-A. Serebrenik, M. van den Brand. Theil index for aggregation of software metrics values. 26th IEEE International Conference on Software Maintenance. IEEE Computer Society.
+Serebrenik A., van den Brand M.: Theil index for aggregation of software metrics values. 26th IEEE International Conference on Software Maintenance. IEEE Computer Society.
+
+Conceição P., Ferreira P.: (2000) The Young Person’s Guide to the Theil Index: Suggesting Intuitive Interpretations and Exploring Analytical Applications
+
+OECD: (2020) Regions and Cities at a Glance 2020, Chapter: Indexes and estimation techniques
 }

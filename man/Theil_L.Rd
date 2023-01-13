@@ -17,13 +17,31 @@ The value of Theil_L coefficient.
 \description{
 Computes Theil_L inequality measure of a given variable taking into account weights.
 }
+\details{
+Theil L index is defined as:
+\deqn{T_{L} =  T_{\alpha=0} =  \frac{1}{N} \sum_{i=1}^N ln \big(\frac{\mu }{x_{i}} \big)}
+where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Theil_L(X)
 Theil_L(X,W)
+
+data(Tourism)
+# Theil L coefficient for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Theil_L(X,W)
+
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
-A. Serebrenik, M. van den Brand. Theil index for aggregation of software metrics values. 26th IEEE International Conference on Software Maintenance. IEEE Computer Society.
+Serebrenik A., van den Brand M.: Theil index for aggregation of software metrics values. 26th IEEE International Conference on Software Maintenance. IEEE Computer Society.
+
+Conceição P., Ferreira P.: (2000) The Young Person’s Guide to the Theil Index: Suggesting Intuitive Interpretations and Exploring Analytical Applications
+
+OECD: (2020) Regions and Cities at a Glance 2020, Chapter: Indexes and estimation techniques
 }

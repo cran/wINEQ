@@ -2,14 +2,16 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Leti}
 \alias{Leti}
-\title{Leti}
+\title{Leti index}
 \usage{
-Leti(X, W = rep(1, length(X)))
+Leti(X, W = rep(1, length(X)), norm = T)
 }
 \arguments{
-\item{X}{is a data vector}
+\item{X}{is a data vector (ordered factor or numeric)}
 
 \item{W}{is a vector of weights}
+
+\item{norm}{(logical). If TRUE (default) then Leti index is divided by a maximum possible value which is \eqn{(k-1)/2} where \eqn{k} in a number of categories.}
 }
 \value{
 The value of Leti coefficient.
@@ -17,12 +19,26 @@ The value of Leti coefficient.
 \description{
 Computes Leti inequality measure of a given variable taking into account weights.
 }
+\details{
+Let \eqn{n_{i}} be the number of individuals in category \eqn{i} and let \eqn{N} be the total sample size.
+Cumulative distribution is given by \eqn{F_{i} = \frac{\sum_{j=1}^{i} n_{j}}{N}}. Leti index is defined as:
+\deqn{L =2 \sum_{i=1}^{k-1} F_{i}(1-F_{i})}
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Leti(X)
 Leti(X,W)
+
+data(Tourism)
+#Leti index for Total expenditure with sample weights:
+X= Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Leti(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Leti G.: (1983). Statistica descrittiva, il Mulino, Bologna. ISBN: 8-8150-0278-2
 }

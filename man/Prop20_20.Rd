@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Prop20_20}
 \alias{Prop20_20}
-\title{Prop20:20}
+\title{Proportion 20:20}
 \usage{
 Prop20_20(X, W = rep(1, length(X)))
 }
@@ -15,16 +15,31 @@ Prop20_20(X, W = rep(1, length(X)))
 The value of 20:20 ratio coefficient.
 }
 \description{
-20:20 ratio - the ratio of thr total income of the 20\% richest people to the 20\% poorest people.
+20:20 ratio - originally the ratio of the total income of the 20\% richest people to the 20\% poorest people.
+}
+\details{
+20:20 ratio is calculated as follows:
+\deqn{Prop =\frac{H}{L}}
+where \eqn{H} is share of 20\% of the highest values,
+\eqn{L} is share of 20\% of the lowest values.
 }
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Prop20_20(X)
 Prop20_20(X,W)
+
+data(Tourism)
+#Prop20_20 proportion for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Prop20_20(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
 Panel Data Econometrics: Theoretical Contributions And Empirical Applications edited by Badi Hani Baltag
+
 Notes on Statistical Sources and Methods - The Equality Trust.
 }

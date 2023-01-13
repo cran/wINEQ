@@ -2,9 +2,9 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Kolm}
 \alias{Kolm}
-\title{Kolm}
+\title{Kolm index}
 \usage{
-Kolm(X, W = rep(1, length(X)), parameter = 1, na.rm = TRUE)
+Kolm(X, W = rep(1, length(X)), parameter = 1, na.rm = TRUE, scale = "None")
 }
 \arguments{
 \item{X}{is a data vector}
@@ -14,6 +14,8 @@ Kolm(X, W = rep(1, length(X)), parameter = 1, na.rm = TRUE)
 \item{parameter}{is a Kolm parameter}
 
 \item{na.rm}{logical, should missing values (NAs) be removed prior to computations? If set to FALSE the computations yield NA}
+
+\item{scale}{method of data scaling (None, Normalization, Unitarization, Standardization)}
 }
 \value{
 The value of Kolm coefficient.
@@ -21,12 +23,36 @@ The value of Kolm coefficient.
 \description{
 Computes Kolm inequality measure of a given variable taking into account weights.
 }
+\details{
+Kolm index with parameter \eqn{\alpha}  is defined as:
+\deqn{K = \frac{1}{ \alpha} (log( \sum_{i=1}^n \exp(\alpha (w_{i} - \mu)) - log(n)))}
+
+Kolm index is scale-dependent. Basic normalization methods can be applied before final computation.
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Kolm(X)
 Kolm(X,W)
+
+# Compare raw and standardized data.
+Kolm(X,W)
+Kolm(X,W, scale ="Standardization")
+
+# Changing units has an impact on the final result
+Kolm(X)
+Kolm(10*X)
+
+# Changing units has no impact on the final result with standardized data
+Kolm(X,scale ="Standardization")
+Kolm(10*X,scale ="Standardization")
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Kolm S. C.: (1976) Unequal inequalities I and II
+
+Kolm S. C.: (1996) Intermediate measures of inequality
+
+Chakravarty S. R.: (2009) Inequality, Polarization and Poverty  e-ISBN 978-0-387-79253-8
 }

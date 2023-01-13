@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Hoover}
 \alias{Hoover}
-\title{Hoover}
+\title{Hoover index}
 \usage{
 Hoover(X, W = rep(1, length(X)))
 }
@@ -17,12 +17,29 @@ The value of Hoover coefficient.
 \description{
 Computes Hoover inequality measure of a given variable taking into account weights.
 }
+\details{
+Let x_{i} be the income of the i-th person and \eqn{\overline{x}} be the mean income. Then the Hoover index H is:
+\deqn{H={\frac {1}{2}}{\frac {\sum_{i}|x_{i}-{\overline{x}}|}{\sum_{i}x_{i}}}}
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Hoover(X)
 Hoover(X,W)
+
+data(Tourism)
+#Hoover index for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+Hoover(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
+
+Hoover E. M. Jr.: (1936) The Measurement of Industrial Localization, The Review of Economics and Statistics, 18
+
+Hoover E. M. Jr.: (1984) An Introduction to Regional Economics, ISBN 0-07-554440-7
 }

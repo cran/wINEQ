@@ -2,23 +2,26 @@
 % Please edit documentation in R/inequalityMeasureBoot.R
 \name{ineq.weighted.boot}
 \alias{ineq.weighted.boot}
-\title{ineq.weighted.boot}
+\title{Weighted inequality measures with bootstrap}
 \usage{
 ineq.weighted.boot(
   X,
   W = rep(1, length(X)),
-  B = 10,
+  B = 100,
   Atkinson.e = 1,
   Jenkins.alfa = 0.8,
   Entropy.e = 0.5,
   Kolm.p = 1,
+  Kolm.scale = "Standardization",
+  Leti.norm = T,
   keepSamples = FALSE,
   keepMeasures = FALSE,
   conf.alpha = 0.05,
   calib.boot = FALSE,
   Xs = rep(1, length(X)),
   total = sum(W),
-  calib.method = "truncated"
+  calib.method = "truncated",
+  bounds = c(low = 0, upp = 10)
 )
 }
 \arguments{
@@ -26,15 +29,19 @@ ineq.weighted.boot(
 
 \item{W}{is a vector of weights}
 
-\item{B}{numer of bootstrap samples.}
+\item{B}{is a number of bootstrap samples.}
 
-\item{Atkinson.e}{is a parameter for calculating the value of the Atkinson coefficient}
+\item{Atkinson.e}{is a parameter for Atkinson coefficient}
 
-\item{Jenkins.alfa}{is the Jenkins coefficient parameter}
+\item{Jenkins.alfa}{is a parameter for Jenkins coefficient}
 
-\item{Entropy.e}{is a entropy parameter}
+\item{Entropy.e}{is a generalized entropy index parameter}
 
-\item{Kolm.p}{is a Kolm parameter}
+\item{Kolm.p}{is a parameter for Kolm index}
+
+\item{Kolm.scale}{method of data standardization before computing}
+
+\item{Leti.norm}{(logical). If TRUE (default) then Leti index is divided by a maximum possible value}
 
 \item{keepSamples}{if TRUE, it returns bootstrap samples of data (Xb) and weights (Wb)}
 
@@ -44,11 +51,13 @@ ineq.weighted.boot(
 
 \item{calib.boot}{if FALSE, then naive bootstrap is performed, calibrated bootstrap elsewhere}
 
-\item{Xs}{matrix of calibration variables}
+\item{Xs}{matrix of calibration variables. By default it is a vector of 1's, applied if calib.boot is TRUE}
 
-\item{total}{vector of population totals}
+\item{total}{vector of population totals. By default it is a sum of weights, applied if calib.boot is TRUE}
 
 \item{calib.method}{weights' calibration method for function calib (sampling)}
+
+\item{bounds}{vector of bounds for the g-weights used in the truncated and logit methods; 'low' is the smallest value and 'upp' is the largest value}
 }
 \value{
 By default this functions returns a data frame from ineq.weighted for weighted mean and weighted total of X as well as for each inequality measure extended with bootstrap results: expected value, bias (in \%), standard deviation, coefficient of variation, lower and upper bound of confidence interval.  If keepSamples=TRUE or keepMeasures==TRUE then the output becomes a list. If keepSamples=TRUE, the functions returns  Xb and Wb, which are the samples of vector data and the samples of weights, respectively. If keepMeasures==TRUE, the functions returns Mb, which is a set of inequality measures from bootstrapping.
@@ -56,9 +65,25 @@ By default this functions returns a data frame from ineq.weighted for weighted m
 \description{
 For weighted mean and weighted total of X as well as for each inequality measure, returns outputs from ineq.weighted and bootstrap outcomes: expected value, bias (in \%), standard deviation, coefficient of variation, lower and upper bound of confidence interval.
 }
+\details{
+At this moment ineq.weighted.boot calculates all inequality measures available in wINEQ packages.
+In future, selection of inequality measures will be available. By default, naive bootstrap is performed, that is no weights calibration is conducted.
+You can choose calibrated bootstrap to calibrate weights with respect to proided variables (Xs) and totals (total).
+Confidence interval is simply derived with quantile of order \eqn{\alpha} and \eqn{1-\alpha} where \eqn{\alpha} is a significance level for confidence interval.
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+library(sampling);library(dplyr)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+ineq.weighted.boot(X)
 ineq.weighted.boot(X,W)
+
+
+data(Tourism)
+# Bootstrap results for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+ineq.weighted.boot(X[1:30],W[1:30],B=50)
 
 }

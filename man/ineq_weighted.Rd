@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasureBoot.R
 \name{ineq.weighted}
 \alias{ineq.weighted}
-\title{ineq.weighted}
+\title{Weighted inequality measures}
 \usage{
 ineq.weighted(
   X,
@@ -10,7 +10,9 @@ ineq.weighted(
   Atkinson.e = 1,
   Jenkins.alfa = 0.8,
   Entropy.e = 0.5,
-  Kolm.p = 1
+  Kolm.p = 1,
+  Kolm.scale = "Standardization",
+  Leti.norm = T
 )
 }
 \arguments{
@@ -18,13 +20,17 @@ ineq.weighted(
 
 \item{W}{is a vector of weights}
 
-\item{Atkinson.e}{is a parameter for calculating the value of the Atkinson coefficient}
+\item{Atkinson.e}{is a parameter for Atkinson coefficient}
 
-\item{Jenkins.alfa}{is the Jenkins coefficient parameter}
+\item{Jenkins.alfa}{is a parameter for Jenkins coefficient}
 
-\item{Entropy.e}{is a entropy parameter}
+\item{Entropy.e}{is a generalized entropy index parameter}
 
-\item{Kolm.p}{is a Kolm parameter}
+\item{Kolm.p}{is a parameter for Kolm index}
+
+\item{Kolm.scale}{method of data standardization before computing}
+
+\item{Leti.norm}{(logical). If TRUE (default) then Leti index is divided by a maximum possible value}
 }
 \value{
 The data frame with weighted mean and sum of X, and all inequality measures.
@@ -32,9 +38,24 @@ The data frame with weighted mean and sum of X, and all inequality measures.
 \description{
 Calculates weighted mean and sum of X, and a set of inequality measures.
 }
+\details{
+At this moment ineq.weighted calculates all inequality measures available in wINEQ packages.
+In future, selection of inequality measures will be available
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+library(dplyr)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+ineq.weighted(X)
+ineq.weighted(X,W)
+
+
+data(Tourism)
+# Results for Total expenditure with sample weights:
+X=Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
+ineq.weighted(X)
 ineq.weighted(X,W)
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{Atkinson}
 \alias{Atkinson}
-\title{Atkinson}
+\title{Atkinson index}
 \usage{
 Atkinson(X, W = rep(1, length(X)), e = 1)
 }
@@ -11,7 +11,7 @@ Atkinson(X, W = rep(1, length(X)), e = 1)
 
 \item{W}{is a vector of weights}
 
-\item{e}{is a parameter for calculating the value of the Atkinson coefficient}
+\item{e}{is a coefficient of aversion to inequality, by default 1}
 }
 \value{
 The value of Atkinson coefficient.
@@ -19,12 +19,31 @@ The value of Atkinson coefficient.
 \description{
 Computes Atkinson inequality measure of a given variable taking into account weights.
 }
+\details{
+Atkinson coefficient with respect to parameter \eqn{\epsilon} is given by
+\deqn{1-\frac{1}{\mu}{(\frac{1}{n}\sum_{i=1}^{n} x_{i}^{1-\epsilon} )}^{\frac{1}{1-\epsilon}}}
+for \eqn{\epsilon \neq 1} and
+\deqn{1-\frac{1}{\mu}{(\prod_{i=1}^{n} x_i)}^{\frac{1}{n}}}
+for \eqn{\epsilon=1}.
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+Atkinson(X)
+Atkinson(X,W)
+
+data(Tourism)
+# Atkinson index for Total expenditure with sample weights:
+X= Tourism$`Total expenditure`
+W=Tourism$`Sample weight`
 Atkinson(X,W)
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Atkinson A. B.: (1970) On the measurement of inequality, Journal of Economic Theory
+
+Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
+
+Allison P.D.: (1978) Measures of Inequality, American Sociological Review
 }

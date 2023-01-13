@@ -2,7 +2,7 @@
 % Please edit documentation in R/inequalityMeasure.R
 \name{AF}
 \alias{AF}
-\title{Allison and Foster}
+\title{Allison and Foster index}
 \usage{
 AF(X, W = rep(1, length(X)))
 }
@@ -17,12 +17,34 @@ The value of Allison and Foster coefficient.
 \description{
 Computes Allison and Foster inequality measure of a given variable taking into account weights.
 }
+\details{
+Let \eqn{m} be the median category and \eqn{p_i} be a share of \eqn{i}-th category. The following index was proposed by Allison and Foster (2004):
+
+\deqn{AF =  \frac{\sum_{i=m}^n c_{i} p_{i} }{\sum_{i=m}^n p_{i}} - \frac{\sum_{i=1}^{m-1} c_{i} p_{i}}{\sum_{i=1}^{m-1} p_{i}}}
+}
 \examples{
-X=c(1,2,3,4,5,6,7,8,9)
-W=c(2,5,6,7,3,4,5,2,5)
+# Compare weighted and unweighted result.
+X=1:10
+W=1:10
+AF(X)
 AF(X,W)
+
+data(Well_being)
+# Allison and Foster index for health assessment with sample weights:
+X=Well_being$V11
+W=Well_being$Weight
+AF(X,W)
+
 
 }
 \references{
-Philip B. Coulter: (1989) Measuring Inequality ISBN 0-8133-7726-9
+Atkinson A. B.: (1970) On the measurement of inequality
+
+Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
+
+Cowell F. A.: (2011) Measuring Inequality (Third Edition) ISBN 978-0-19-959403-0
+
+Allison R. A., Foster J E.: (2004) Measuring health inequality using qualitative data, Journal of Health Economics
+
+Kobus M., Miłoś P.: (2011) Inequality decomposition by population subgroups for ordinal data, Working Papers, No. 24
 }
