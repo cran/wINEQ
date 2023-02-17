@@ -1,8 +1,8 @@
-6b0d4029e7fee8e8aef5f046a4c7bbd1 *DESCRIPTION
+46d2eca0a6ca860ecafe9942b1f838bb *DESCRIPTION
 3663227a9d5529ea250700ab893af660 *NAMESPACE
-b5cfc9eb804c379e39c0720c03c2a5f0 *NEWS.md
+bede3dfcaefd7428384127c19b762bca *NEWS.md
 7b163e2211baf28696fd4e5ea96dcc3c *R/inequalityMeasure.R
-666c10793833c15f1372c33af24ec4e6 *R/inequalityMeasureBoot.R
+2ea5729e2783679df407cb20d40be637 *R/inequalityMeasureBoot.R
 7c4f452ae8f87b6c1cc1159b5c4ecb5a *data/Tourism.rda
 2fd1e4b3135db0f3841d7c650f491f1d *data/Well_being.rda
 99c5b5d7ce37ba3ae72f046df39945ec *man/Allison_and_Foster.Rd
@@ -22,4 +22,4 @@ dd1e1da2b385a287d0cf4ec236a62bc3 *man/RicciSchutz.Rd
 f899351a77f06ba2222bf1c07f4ae3bf *man/Tourism.Rd
 d779cea7cd0e1d962e0c76c00fe03da6 *man/Well_being.Rd
 b3ba3e43e5e5b16b767c80b45a78f808 *man/ineq_weighted.Rd
-cc2484e9e60adfa608ef7ccd3c6c8d3a *man/ineq_weighted_boot.Rd
+f90fe476fa2762e466e610e540ccd31a *man/ineq_weighted_boot.Rd

@@ -106,18 +106,12 @@ ineq.weighted=function(X,W=rep(1,length(X)),Atkinson.e=1,Jenkins.alfa=0.8,Entrop
 #'
 #' @examples
 #' library(sampling);library(dplyr)
-#' # Compare weighted and unweighted result.
+#' # Inequality measures with additional statistics
 #' X=1:10
 #' W=1:10
-#' ineq.weighted.boot(X)
 #' ineq.weighted.boot(X,W)
 #'
 #'
-#' data(Tourism)
-#' # Bootstrap results for Total expenditure with sample weights:
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
-#' ineq.weighted.boot(X[1:30],W[1:30],B=50)
 #'
 #' @export
 ineq.weighted.boot=function(X,W=rep(1,length(X)),B=100,
@@ -132,7 +126,7 @@ ineq.weighted.boot=function(X,W=rep(1,length(X)),B=100,
   Wb=matrix(W[Z],nrow=length(W),ncol=B)
   if(calib.boot)
   {
-    for(i in seq_along(Wb))
+    for(i in 1:B)
     {
       Wb[,i]=Wb[,i]*calib(Xs = Xs,d = Wb[,i],total = total,method = calib.method,bounds=bounds)
     }
@@ -153,8 +147,8 @@ ineq.weighted.boot=function(X,W=rep(1,length(X)),B=100,
 
   Results=cbind(Statistics=c('Index (I)','E(I)','Bias(I) [%]','Sd(I)','CV(I) [%]','Lower Q(I)','Higher Q(I)'),rbind(M,Mmean,(M/Mmean-1)*100,Msd,Mcv,Mq1,Mq2))
 
-  if(keepSamples==FALSE & keepMeasures==FALSE){return(Results)}
-  if(keepSamples & keepMeasures){return(list(Results,Mb,Xb,Wb))}
-  if(keepSamples){return(list(Results,Xb,Wb))}
-  if(keepMeasures){return(list(Results,Mb))}
+  if(keepSamples==FALSE & keepMeasures==FALSE){return(Stats=Results)}
+  if(keepSamples & keepMeasures){return(list(Stats=Results,Measures=Mb,Variables=Xb,Weights=Wb))}
+  if(keepSamples){return(list(Stats=Results,Variables=Xb,Weights=Wb))}
+  if(keepMeasures){return(list(Stats=Results,Measures=Mb))}
 }

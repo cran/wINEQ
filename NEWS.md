@@ -3,7 +3,22 @@
 
 # *News*
 
-# wINEQ 1.1.0 _(2023-01-13)_
+# wINEQ 1.1.2 _(2023-02-16)_
+
+## Bugs fixed
+
+* Function `ineq.weighted.boot` worked incorrectly for calibrated bootstrap storing results in an object of wrong dimensions. 
+
+## Changes
+
+* Function `ineq.weighted.boot` returns named list to access its items easily. 
+
+## Future works
+
+* more inequality measures for ordinal data
+
+
+# wINEQ 1.1.1 _(2023-01-13)_
 
 ## Changes
 
@@ -17,7 +32,7 @@
 * Added new data `Tourism` - data from sample survey on trips conducted in Polish households. Modified due to SDC.
 * Added examples for new datasets.
 
-## Bugs fixed:
+## Bugs fixed
 
 * Function `ineq.weighted.boot` did not take a default `bounds` parameter for `calib` function. Now `bounds` parameter is added with default values.
 * `Leti` function incorrectly calculated a cumulative distribution. Fixed.

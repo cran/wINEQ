@@ -73,17 +73,11 @@ Confidence interval is simply derived with quantile of order \eqn{\alpha} and \e
 }
 \examples{
 library(sampling);library(dplyr)
-# Compare weighted and unweighted result.
+# Inequality measures with additional statistics
 X=1:10
 W=1:10
-ineq.weighted.boot(X)
 ineq.weighted.boot(X,W)
 
 
-data(Tourism)
-# Bootstrap results for Total expenditure with sample weights:
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
-ineq.weighted.boot(X[1:30],W[1:30],B=50)
 
 }
