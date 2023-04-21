@@ -7,18 +7,26 @@
 ineq.weighted(
   X,
   W = rep(1, length(X)),
+  AF.norm = TRUE,
   Atkinson.e = 1,
   Jenkins.alfa = 0.8,
   Entropy.e = 0.5,
   Kolm.p = 1,
   Kolm.scale = "Standardization",
-  Leti.norm = T
+  Leti.norm = T,
+  AN_Y.a = 1,
+  AN_Y.b = 1,
+  Apouey.a = 2/(1 - length(W[!is.na(W) & !is.na(X)])),
+  Apouey.b = length(W[!is.na(W) & !is.na(X)])/(length(W[!is.na(W) & !is.na(X)]) - 1),
+  BL.withsqrt = FALSE
 )
 }
 \arguments{
 \item{X}{is a data vector}
 
 \item{W}{is a vector of weights}
+
+\item{AF.norm}{(logical). If TRUE (default) then index is divided by its maximum possible value}
 
 \item{Atkinson.e}{is a parameter for Atkinson coefficient}
 
@@ -31,19 +39,28 @@ ineq.weighted(
 \item{Kolm.scale}{method of data standardization before computing}
 
 \item{Leti.norm}{(logical). If TRUE (default) then Leti index is divided by a maximum possible value}
+
+\item{AN_Y.a}{is a positive parameter for Abul Naga and Yalcin inequality measure}
+
+\item{AN_Y.b}{is a parameter for Abul Naga and Yalcin inequality measure}
+
+\item{Apouey.a}{is a parameter for Apouey inequality measure}
+
+\item{Apouey.b}{is a parameter for Apouey inequality measure}
+
+\item{BL.withsqrt}{if TRUE function returns index given by BL2, elsewhere by BL (default). See more in details of BL function.}
 }
 \value{
-The data frame with weighted mean and sum of X, and all inequality measures.
+The data frame with weighted mean and sum of X, and all inequality measures relevant for a numeric data.
+In a case of an ordered factor, the data frame with median of X, and all relevant inequality measures.
 }
 \description{
-Calculates weighted mean and sum of X, and a set of inequality measures.
+Calculates weighted mean and sum of X (or median of X), and a set of relevant inequality measures.
 }
 \details{
-At this moment ineq.weighted calculates all inequality measures available in wINEQ packages.
-In future, selection of inequality measures will be available
+Function checks if X is a numeric or an ordered factor. Then it calculates all appropriate inequality measures.
 }
 \examples{
-library(dplyr)
 # Compare weighted and unweighted result.
 X=1:10
 W=1:10

@@ -23,14 +23,14 @@ Theil T index is defined as:
 where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Theil_T(X)
 Theil_T(X,W)
 
 data(Tourism)
-# Theil T coefficient for Total expenditure with sample weights:
+# Theil T coefficient for Total expenditure with sample weights
 X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Theil_T(X,W)

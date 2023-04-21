@@ -4,7 +4,7 @@
 \alias{Entropy}
 \title{Generalized entropy index}
 \usage{
-Entropy(X, W = rep(1, length(X)), parameter = 0.5, na.rm = TRUE)
+Entropy(X, W = rep(1, length(X)), parameter = 0.5)
 }
 \arguments{
 \item{X}{is a data vector}
@@ -12,8 +12,6 @@ Entropy(X, W = rep(1, length(X)), parameter = 0.5, na.rm = TRUE)
 \item{W}{is a vector of weights}
 
 \item{parameter}{is a entropy parameter}
-
-\item{na.rm}{logical, should missing values (NAs) be removed prior to computations? If set to FALSE the computations yield NA}
 }
 \value{
 The value of generalized entropy index
@@ -28,15 +26,15 @@ is equal to Theil_T(X,W) whenever \eqn{\alpha=1}, and whenever \eqn{\alpha \in (
 where \eqn{W} is a sum of weights and \eqn{\mu} is the arithmetic mean of \eqn{x_{1},...,x_{n}}.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Entropy(X)
 Entropy(X,W)
 
 data(Tourism)
-# Generalized entropy index for Total expenditure with sample weights:
-X= Tourism$`Total expenditure`
+# Generalized entropy index for Total expenditure with sample weights
+X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Entropy(X,W)
 

@@ -34,14 +34,14 @@ for \eqn{\alpha \in (0,1)}, and
 for \eqn{\alpha = 0}.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Jenkins(X)
 Jenkins(X,W)
 
 data(Tourism)
-#Jenkins, Cowell and Flachaire coefficients for Total expenditure with sample weights:
+#Jenkins, Cowell and Flachaire coefficients for Total expenditure with sample weights
 X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Jenkins(X,W)
@@ -49,8 +49,6 @@ Jenkins(X,W)
 
 }
 \references{
-Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
-
 Jenkins S. P. and P. J. Lambert: (1997) Three ‘I’s of Poverty Curves, with an Analysis of U.K. Poverty Trends
 
 Cowell F. A.: (2000) Measurement of Inequality, Handbook of Income Distribution

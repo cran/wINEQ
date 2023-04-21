@@ -4,14 +4,12 @@
 \alias{RicciSchutz}
 \title{Ricci and Schutz index}
 \usage{
-RicciSchutz(X, W = rep(1, length(X)), na.rm = TRUE)
+RicciSchutz(X, W = rep(1, length(X)))
 }
 \arguments{
 \item{X}{is a data vector}
 
 \item{W}{is a vector of weights}
-
-\item{na.rm}{logical, should missing values (NAs) be removed prior to computations? If set to FALSE the computations yield NA}
 }
 \value{
 The value of Ricci and Schutz coefficient.
@@ -24,15 +22,15 @@ In the case of an empirical distribution with n elements where y_{i} denotes the
 \deqn{RS =  \frac{1}{2n} \sum_{i=1}^{n} \frac{\mid y_{i} - \overline{y} \mid}{\overline{y}}}
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 RicciSchutz(X)
 RicciSchutz(X,W)
 
 data(Tourism)
-#Ricci and Schutz index for Total expenditure with sample weights:
-X= Tourism$`Total expenditure`
+#Ricci and Schutz index for Total expenditure with sample weights
+X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 RicciSchutz(X,W)
 

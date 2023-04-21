@@ -3,6 +3,26 @@
 
 # *News*
 
+# wINEQ 1.2.0 _(2023-04-22)_
+
+## New features
+
+* Package has been enriched with new inequality measures for variables on an ordinal scale, that is:
+  + Apouey index
+  + Abul Naga and Yalcin index
+  + Blair and Lacy ndex
+* Functions `ineq.weighted` and `ineq.weighted.boot` now start with assessing if variable of interest is numeric whether ordered factor. Then the inequality measures appropriate for the given variable are returned.
+* New function `medianF` returns median for an ordered factor.
+
+
+## Changes
+
+* Improvement of handling with missing data or wrong data format.
+* Allison and Foster index formula is not suitable for an ordered factor. Hence, function `AF` converts an ordered factor variable to numeric variable and then performs calculation.  
+
+
+
+
 # wINEQ 1.1.2 _(2023-02-16)_
 
 ## Bugs fixed

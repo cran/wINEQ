@@ -22,23 +22,21 @@ Gini coefficient is given by:
 \deqn{G = \frac{ \sum_{i=1}^n \sum_{j=1}^n \mid x_{i} - x_{j} \mid}{2n^{2} \overline{x}}}
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Gini(X)
 Gini(X,W)
 
 data(Tourism)
-#Gini coefficient for Total expenditure with sample weights:
-X= Tourism$`Total expenditure`
+#Gini coefficient for Total expenditure with sample weights
+X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Gini(X,W)
 
 
 }
 \references{
-Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
-
 Dixon P. M., Weiner, J., Mitchell-Olds, T., and Woodley, R.: (1987) Bootstrapping the Gini Coefficient of Inequality. Ecology , Volume 68 (5)
 
 Firebaugh G.: (1999) Empirics of World Income Inequality, American Journal of Sociology

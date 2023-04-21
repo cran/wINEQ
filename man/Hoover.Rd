@@ -22,14 +22,14 @@ Let x_{i} be the income of the i-th person and \eqn{\overline{x}} be the mean in
 \deqn{H={\frac {1}{2}}{\frac {\sum_{i}|x_{i}-{\overline{x}}|}{\sum_{i}x_{i}}}}
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Hoover(X)
 Hoover(X,W)
 
 data(Tourism)
-#Hoover index for Total expenditure with sample weights:
+#Hoover index for Total expenditure with sample weights
 X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Hoover(X,W)
@@ -37,8 +37,6 @@ Hoover(X,W)
 
 }
 \references{
-Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
-
 Hoover E. M. Jr.: (1936) The Measurement of Industrial Localization, The Review of Economics and Statistics, 18
 
 Hoover E. M. Jr.: (1984) An Introduction to Regional Economics, ISBN 0-07-554440-7

@@ -7,7 +7,7 @@
 Prop20_20(X, W = rep(1, length(X)))
 }
 \arguments{
-\item{X}{is a data vector}
+\item{X}{is a data vector (numeric or ordered factor)}
 
 \item{W}{is a vector of weights}
 }
@@ -24,14 +24,14 @@ where \eqn{H} is share of 20\% of the highest values,
 \eqn{L} is share of 20\% of the lowest values.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Prop20_20(X)
 Prop20_20(X,W)
 
 data(Tourism)
-#Prop20_20 proportion for Total expenditure with sample weights:
+#Prop20_20 proportion for Total expenditure with sample weights
 X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Prop20_20(X,W)

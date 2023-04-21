@@ -27,23 +27,19 @@ for \eqn{\epsilon \neq 1} and
 for \eqn{\epsilon=1}.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Atkinson(X)
 Atkinson(X,W)
 
 data(Tourism)
-# Atkinson index for Total expenditure with sample weights:
-X= Tourism$`Total expenditure`
+# Atkinson index for Total expenditure with sample weights
+X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Atkinson(X,W)
 
 }
 \references{
 Atkinson A. B.: (1970) On the measurement of inequality, Journal of Economic Theory
-
-Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
-
-Allison P.D.: (1978) Measures of Inequality, American Sociological Review
 }

@@ -7,7 +7,7 @@
 Palma(X, W = rep(1, length(X)))
 }
 \arguments{
-\item{X}{is a data vector}
+\item{X}{is a data vector (numeric or ordered factor)}
 
 \item{W}{is a vector of weights}
 }
@@ -24,14 +24,14 @@ where \eqn{H} is share of 10\% of the highest values,
 \eqn{L} is share of 40\% of the lowest values.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Palma(X)
 Palma(X,W)
 
 data(Tourism)
-#Palma index for Total expenditure with sample weights:
+#Palma index for Total expenditure with sample weights
 X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Palma(X,W)

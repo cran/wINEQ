@@ -23,14 +23,14 @@ Theil L index is defined as:
 where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Theil_L(X)
 Theil_L(X,W)
 
 data(Tourism)
-# Theil L coefficient for Total expenditure with sample weights:
+# Theil L coefficient for Total expenditure with sample weights
 X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 Theil_L(X,W)

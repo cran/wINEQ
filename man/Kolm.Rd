@@ -4,7 +4,7 @@
 \alias{Kolm}
 \title{Kolm index}
 \usage{
-Kolm(X, W = rep(1, length(X)), parameter = 1, na.rm = TRUE, scale = "None")
+Kolm(X, W = rep(1, length(X)), parameter = 1, scale = "None")
 }
 \arguments{
 \item{X}{is a data vector}
@@ -12,8 +12,6 @@ Kolm(X, W = rep(1, length(X)), parameter = 1, na.rm = TRUE, scale = "None")
 \item{W}{is a vector of weights}
 
 \item{parameter}{is a Kolm parameter}
-
-\item{na.rm}{logical, should missing values (NAs) be removed prior to computations? If set to FALSE the computations yield NA}
 
 \item{scale}{method of data scaling (None, Normalization, Unitarization, Standardization)}
 }
@@ -30,7 +28,7 @@ Kolm index with parameter \eqn{\alpha}  is defined as:
 Kolm index is scale-dependent. Basic normalization methods can be applied before final computation.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 Kolm(X)

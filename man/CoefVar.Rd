@@ -4,7 +4,7 @@
 \alias{CoefVar}
 \title{Coefficient of Variation}
 \usage{
-CoefVar(X, W = rep(1, length(X)), square = FALSE, na.rm = TRUE)
+CoefVar(X, W = rep(1, length(X)), square = FALSE)
 }
 \arguments{
 \item{X}{is a data vector}
@@ -12,8 +12,6 @@ CoefVar(X, W = rep(1, length(X)), square = FALSE, na.rm = TRUE)
 \item{W}{is a vector of weights}
 
 \item{square}{logical, argument of the function CoefVar, for details see below}
-
-\item{na.rm}{logical, should missing values (NAs) be removed prior to computations? If set to FALSE the computations yield NA}
 }
 \value{
 The value of CoefVar coefficient.
@@ -27,15 +25,15 @@ Coefficient of variation is given by:
 where \eqn{\sigma} is a standard deviation and \eqn{\mu} is arithmetic mean.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 CoefVar(X)
 CoefVar(X,W)
 
 data(Tourism)
-#Coefficient of variation for Total expenditure with sample weights:
-X= Tourism$`Total expenditure`
+#Coefficient of variation for Total expenditure with sample weights
+X=Tourism$`Total expenditure`
 W=Tourism$`Sample weight`
 CoefVar(X,W)
 

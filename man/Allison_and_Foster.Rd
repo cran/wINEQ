@@ -4,12 +4,14 @@
 \alias{AF}
 \title{Allison and Foster index}
 \usage{
-AF(X, W = rep(1, length(X)))
+AF(X, W = rep(1, length(X)), norm = TRUE)
 }
 \arguments{
-\item{X}{is a data vector}
+\item{X}{is a data vector (numeric or ordered factor)}
 
 \item{W}{is a vector of weights}
+
+\item{norm}{(logical). If TRUE (default) then index is divided by a maximum possible value which is a difference between maximum and minimum of X}
 }
 \value{
 The value of Allison and Foster coefficient.
@@ -18,19 +20,19 @@ The value of Allison and Foster coefficient.
 Computes Allison and Foster inequality measure of a given variable taking into account weights.
 }
 \details{
-Let \eqn{m} be the median category and \eqn{p_i} be a share of \eqn{i}-th category. The following index was proposed by Allison and Foster (2004):
-
+Let \eqn{c=(c_{1},...,c_{n})} be the vector of categories in increasing order, \eqn{m} be the median category and \eqn{p_i} be a share of \eqn{i}-th category. The following index was proposed by Allison and Foster (2004):
 \deqn{AF =  \frac{\sum_{i=m}^n c_{i} p_{i} }{\sum_{i=m}^n p_{i}} - \frac{\sum_{i=1}^{m-1} c_{i} p_{i}}{\sum_{i=1}^{m-1} p_{i}}}
+Note that above formula is valid only for numerical values. Thus, in order to compute AF for ordered factor, X is converted to numerical variable.
 }
 \examples{
-# Compare weighted and unweighted result.
+# Compare weighted and unweighted result
 X=1:10
 W=1:10
 AF(X)
 AF(X,W)
 
 data(Well_being)
-# Allison and Foster index for health assessment with sample weights:
+# Allison and Foster index for health assessment with sample weights
 X=Well_being$V11
 W=Well_being$Weight
 AF(X,W)
@@ -38,13 +40,5 @@ AF(X,W)
 
 }
 \references{
-Atkinson A. B.: (1970) On the measurement of inequality
-
-Coulter P. B.: (1989) Measuring Inequality ISBN 0-8133-7726-9
-
-Cowell F. A.: (2011) Measuring Inequality (Third Edition) ISBN 978-0-19-959403-0
-
 Allison R. A., Foster J E.: (2004) Measuring health inequality using qualitative data, Journal of Health Economics
-
-Kobus M., Miłoś P.: (2011) Inequality decomposition by population subgroups for ordinal data, Working Papers, No. 24
 }
