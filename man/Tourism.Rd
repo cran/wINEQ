@@ -5,12 +5,18 @@
 \alias{Tourism}
 \title{Sample survey on trips}
 \format{
-A data frame with 384 observations of 14 variables
+A data frame with 5319 observations of 17 variables
 \itemize{
 \item Year
-\item Group of countries
+\item Country
+\item Country code
+\item World region
 \item Purpose of trip
 \item Accommodation type
+\item Number of trip's participants
+\item Nights spent
+\item Travel agency (organiser)
+\item Sample weight
 \item Total expenditure
 \item Expenditure for organiser
 \item Private expenditure
@@ -18,9 +24,6 @@ A data frame with 384 observations of 14 variables
 \item Expenditure on restaurants & café
 \item Expenditure on transport
 \item Expenditure on commodities
-\item Number of trip's participants
-\item Nights spent
-\item Sample weight
 }
 }
 \usage{

@@ -18,7 +18,7 @@ The value of Ricci and Schutz coefficient.
 Computes Ricci and Schutz inequality measure of a given variable taking into account weights.
 }
 \details{
-In the case of an empirical distribution with n elements where y_{i} denotes the wealth of household i and \eqn{\overline{y}} the sample average, the Ricci and Schutz coefficient can be expressed as:
+In the case of an empirical distribution with n elements where \eqn{y_{i}} denotes the wealth of household \eqn{i} and \eqn{\overline{y}} the sample average, the Ricci and Schutz coefficient can be expressed as:
 \deqn{RS =  \frac{1}{2n} \sum_{i=1}^{n} \frac{\mid y_{i} - \overline{y} \mid}{\overline{y}}}
 }
 \examples{
@@ -30,8 +30,8 @@ RicciSchutz(X,W)
 
 data(Tourism)
 #Ricci and Schutz index for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 RicciSchutz(X,W)
 
 

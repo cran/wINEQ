@@ -18,7 +18,7 @@ The value of Hoover coefficient.
 Computes Hoover inequality measure of a given variable taking into account weights.
 }
 \details{
-Let x_{i} be the income of the i-th person and \eqn{\overline{x}} be the mean income. Then the Hoover index H is:
+Let \eqn{x_{i}} be the income of the i-th person and \eqn{\overline{x}} be the mean income. Then the Hoover index H is:
 \deqn{H={\frac {1}{2}}{\frac {\sum_{i}|x_{i}-{\overline{x}}|}{\sum_{i}x_{i}}}}
 }
 \examples{
@@ -30,8 +30,8 @@ Hoover(X,W)
 
 data(Tourism)
 #Hoover index for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Hoover(X,W)
 
 

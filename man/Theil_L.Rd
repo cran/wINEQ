@@ -21,6 +21,7 @@ Computes Theil_L inequality measure of a given variable taking into account weig
 Theil L index is defined as:
 \deqn{T_{L} =  T_{\alpha=0} =  \frac{1}{N} \sum_{i=1}^N ln \big(\frac{\mu }{x_{i}} \big)}
 where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
+Theil L index can be computed only for positive values. By default, this functions discard zero X's and corresponding weights.
 }
 \examples{
 # Compare weighted and unweighted result
@@ -31,8 +32,8 @@ Theil_L(X,W)
 
 data(Tourism)
 # Theil L coefficient for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Theil_L(X,W)
 
 

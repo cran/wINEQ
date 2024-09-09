@@ -3,6 +3,32 @@
 
 # *News*
 
+# wINEQ 1.2.1 _(2024-08-03)_
+
+## New features
+
+* Package has been enriched with additional functions, that is:
+  + `Quantile` computes quantile derived for the given probability taking into account weights
+  + `LowerSum` computes weighted sum of values lower then a quantile derived for the given probability. It is a part of very well-know inequality indices. 
+* Function `Theil_T`, `Theil_L` and `Entropy` have an option to deal with zeroes in a data vector.
+  
+## Bugs fixed
+
+* Functions `Palma` and `Prop20_20` incorrectly determined quantiles. 
+
+## Changes
+
+* Function `Gini` have an alternative computing algorithm: slower but memory saving. 
+
+## Future works
+
+* new inequality measures
+* vignette presenting an example workflow with our package
+* enhanced dataset with tourists' expenditures on trips
+
+
+
+
 # wINEQ 1.2.0 _(2023-04-22)_
 
 ## New features
@@ -10,7 +36,7 @@
 * Package has been enriched with new inequality measures for variables on an ordinal scale, that is:
   + Apouey index
   + Abul Naga and Yalcin index
-  + Blair and Lacy ndex
+  + Blair and Lacy index
 * Functions `ineq.weighted` and `ineq.weighted.boot` now start with assessing if variable of interest is numeric whether ordered factor. Then the inequality measures appropriate for the given variable are returned.
 * New function `medianF` returns median for an ordered factor.
 

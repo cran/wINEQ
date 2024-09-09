@@ -10,7 +10,8 @@ ineq.weighted(
   AF.norm = TRUE,
   Atkinson.e = 1,
   Jenkins.alfa = 0.8,
-  Entropy.e = 0.5,
+  Entropy.power = 0.5,
+  zeroes = "include",
   Kolm.p = 1,
   Kolm.scale = "Standardization",
   Leti.norm = T,
@@ -32,7 +33,9 @@ ineq.weighted(
 
 \item{Jenkins.alfa}{is a parameter for Jenkins coefficient}
 
-\item{Entropy.e}{is a generalized entropy index parameter}
+\item{Entropy.power}{is a generalized entropy index parameter}
+
+\item{zeroes}{defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Entropy function for details.}
 
 \item{Kolm.p}{is a parameter for Kolm index}
 

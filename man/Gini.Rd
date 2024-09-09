@@ -4,12 +4,16 @@
 \alias{Gini}
 \title{Gini coefficient}
 \usage{
-Gini(X, W = rep(1, length(X)))
+Gini(X, W = rep(1, length(X)), fast = TRUE, rounded.weights = FALSE)
 }
 \arguments{
 \item{X}{is a data vector}
 
 \item{W}{is a vector of weights}
+
+\item{fast}{logical, if TRUE (default), Gini is calculated via matrix operations - fast but may cause memory allocation problems. If FALSE, Gini is calculated via vector operations - slower but with better memory allocation}
+
+\item{rounded.weights}{logical, may be run when fast=FALSE. If TRUE (default), Gini is calculated through alternative formula based on ordered X and integer weights. Choose it when dealing with memory allocation problems.}
 }
 \value{
 The value of Gini coefficient.
@@ -30,8 +34,8 @@ Gini(X,W)
 
 data(Tourism)
 #Gini coefficient for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Gini(X,W)
 
 

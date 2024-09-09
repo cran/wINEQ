@@ -44,7 +44,7 @@ Data from sample survey on quality of life conducted on Polish-Ukrainian border 
 }
 \details{
 Questions are on Likert scale: 1 - the worst assessment, 5 - the best assessment.
-Only 23 question were selected out of over 100 questions.
+Only 23 questions were selected out of over 100 questions.
 Answers were modified due to disclosure control.
 }
 \keyword{datasets}

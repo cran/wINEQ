@@ -4,12 +4,14 @@
 \alias{Theil_T}
 \title{Theil T}
 \usage{
-Theil_T(X, W = rep(1, length(X)))
+Theil_T(X, W = rep(1, length(X)), zeroes = "include")
 }
 \arguments{
 \item{X}{is a data vector}
 
 \item{W}{is a vector of weights}
+
+\item{zeroes}{defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Details for more.}
 }
 \value{
 The value of \code{Theil_T} coefficient.
@@ -21,6 +23,11 @@ Computes \code{Theil_T} inequality measure of a given variable taking into accou
 Theil T index is defined as:
 \deqn{T_{T} =  T_{\alpha=1} =  \frac{1}{N}  \sum_{i=1}^N  \frac{ x_{i} }{\mu} ln \big( \frac{ x_{i} }{\mu} \big)}
 where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
+Formally, Theil index is defined for positive values due to logarithms.
+Nevertheless, in data analysis zero values may occur.
+There are two way we can deal with them.
+Option "remove" discard these X's and corresponding weights.
+Option "include" puts \eqn{0\log{0=}0} due to limiting property of \eqn{p\log{p}} in zero preserving zero value in dataset.
 }
 \examples{
 # Compare weighted and unweighted result
@@ -31,8 +38,8 @@ Theil_T(X,W)
 
 data(Tourism)
 # Theil T coefficient for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Theil_T(X,W)
 
 

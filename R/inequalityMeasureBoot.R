@@ -7,7 +7,8 @@
 #' @param AF.norm (logical). If TRUE (default) then index is divided by its maximum possible value
 #' @param Atkinson.e is a parameter for Atkinson coefficient
 #' @param Jenkins.alfa is a parameter for Jenkins coefficient
-#' @param Entropy.e is a generalized entropy index parameter
+#' @param Entropy.power is a generalized entropy index parameter
+#' @param zeroes defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Entropy function for details.
 #' @param Kolm.p is a parameter for Kolm index
 #' @param Kolm.scale method of data standardization before computing
 #' @param Leti.norm (logical). If TRUE (default) then Leti index is divided by a maximum possible value
@@ -49,7 +50,8 @@ ineq.weighted=function(
     AF.norm=TRUE,
     Atkinson.e=1,
     Jenkins.alfa=0.8,
-    Entropy.e=0.5,
+    Entropy.power=0.5,
+    zeroes='include',
     Kolm.p=1,
     Kolm.scale='Standardization',
     Leti.norm=T,
@@ -82,18 +84,18 @@ ineq.weighted=function(
   }
   if(is.numeric(X))
   {
-    if(min(X)==0){X=X+0.001*min(X[X>0])}
+    #if(min(X)==0){X=X+0.001*min(X[X>0])}
     result <- data %>%
       summarise(
         Mean = sum(W*X)/sum(W),
         Total = sum(W*X),
         Theil_L= Theil_L(X,W),
-        Theil_T=Theil_T(X,W),
+        Theil_T=Theil_T(X,W,zeroes),
         Hoover=Hoover(X,W),
         Gini=Gini(X,W),
         Atkinson=Atkinson(X,W,Atkinson.e),
-        Kolm=Kolm(X,W,scale = Kolm.scale,parameter = Kolm.p),
-        Entropy=Entropy(X,W,parameter = Entropy.e),
+        Kolm=Kolm(X,W,parameter = Kolm.p,scale = Kolm.scale),
+        Entropy=Entropy(X,W,power = Entropy.power,zeroes),
         CoefVar=CoefVar(X,W),
         RicciSchutz=RicciSchutz(X,W),
         Prop20_20=Prop20_20(X,W),
@@ -116,7 +118,8 @@ ineq.weighted=function(
 #' @param AF.norm (logical). If TRUE (default) then index is divided by its maximum possible value
 #' @param Atkinson.e is a parameter for Atkinson coefficient
 #' @param Jenkins.alfa is a parameter for Jenkins coefficient
-#' @param Entropy.e is a generalized entropy index parameter
+#' @param Entropy.power is a generalized entropy index parameter
+#' @param zeroes defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Entropy function for details.
 #' @param Kolm.p is a parameter for Kolm index
 #' @param Kolm.scale method of data standardization before computing
 #' @param Leti.norm (logical). If TRUE (default) then Leti index is divided by a maximum possible value
@@ -166,7 +169,8 @@ ineq.weighted.boot=function(X,
                             AF.norm=TRUE,
                             Atkinson.e=1,
                             Jenkins.alfa=0.8,
-                            Entropy.e=0.5,
+                            Entropy.power=0.5,
+                            zeroes='include',
                             Kolm.p=1,
                             Kolm.scale='Standardization',
                             Leti.norm=T,
@@ -215,7 +219,8 @@ ineq.weighted.boot=function(X,
                            AF.norm,
                            Atkinson.e,
                            Jenkins.alfa,
-                           Entropy.e,
+                           Entropy.power,
+                           zeroes,
                            Kolm.p,
                            Kolm.scale,
                            Leti.norm,
@@ -231,7 +236,8 @@ ineq.weighted.boot=function(X,
                   AF.norm,
                   Atkinson.e,
                   Jenkins.alfa,
-                  Entropy.e,
+                  Entropy.power,
+                  zeroes,
                   Kolm.p,
                   Kolm.scale,
                   Leti.norm,

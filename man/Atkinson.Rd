@@ -35,8 +35,8 @@ Atkinson(X,W)
 
 data(Tourism)
 # Atkinson index for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Atkinson(X,W)
 
 }

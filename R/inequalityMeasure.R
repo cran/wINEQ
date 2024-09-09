@@ -89,8 +89,8 @@ AF=function(X,W=rep(1,length(X)),norm=TRUE)
 #'
 #' data(Tourism)
 #' # Atkinson index for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Atkinson(X,W)
 #'
 #' @export
@@ -98,7 +98,7 @@ Atkinson=function(X,W=rep(1,length(X)),e=1)
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
   if(e==1){A=1-prod(X^(W/sum(W)))/ (sum(W*X)/sum(W))}else{
@@ -113,7 +113,8 @@ Atkinson=function(X,W=rep(1,length(X)),e=1)
 #'
 #' @param X is a data vector
 #' @param W is a vector of weights
-#' @param parameter is a entropy parameter
+#' @param power is a entropy parameter
+#' @param zeroes defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Details for more.
 #'
 #'
 #' @return The value of generalized entropy index
@@ -124,6 +125,11 @@ Atkinson=function(X,W=rep(1,length(X)),e=1)
 #' is equal to Theil_T(X,W) whenever \eqn{\alpha=1}, and whenever \eqn{\alpha \in (0,1)} we have
 #' \deqn{GE(\alpha) = \frac{1}{\alpha(\alpha-1)W}\sum_{i=1}^{n}w_{i}\left(\left(\frac{x_{i}}{\mu}\right)^\alpha-1\right)}
 #' where \eqn{W} is a sum of weights and \eqn{\mu} is the arithmetic mean of \eqn{x_{1},...,x_{n}}.
+#'          Entropy coefficient is not well-defined for data vector with zero values whenever parameter is zero or one.
+#'          In such case, entropy index coincides with the definition of Theil L index and Theil T index, respectively, and entropy index is calculated with corresponding Theil function.
+#'          Theil L always removes zeroes. Theil T enables two ways to deal with zeroes by parameter zeroes.
+#'          Option "remove" discard these X's and corresponding weights. Works for power>0.
+#'          Option "include" puts \eqn{0\log{0=}0} due to limiting property of \eqn{p\log{p}} in zero preserving zero value in dataset. It is valid only for Theil T index, that is power=0.
 #'
 #' @references Shorrocks A. F.: (1980) The Class of Additively Decomposable Inequality Measures. Econometrica
 #' @references Pielou E.C.: (1966) The measurement of diversity in different types of biological collections. Journal of Theoretical Biology
@@ -137,29 +143,24 @@ Atkinson=function(X,W=rep(1,length(X)),e=1)
 #'
 #' data(Tourism)
 #' # Generalized entropy index for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Entropy(X,W)
 #'
 #'
 #' @export
-Entropy=function (X,W=rep(1,length(X)), parameter = 0.5)
+Entropy=function (X,W=rep(1,length(X)), power = 0.5,zeroes = 'include')
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
-  if (parameter == 0)
-    e <- Theil_L(X,W)
-  else if (parameter == 1)
-    e <- Theil_T(X,W)
-  else {
-    k <- parameter
-    e <- W*(X/(sum(W*X)/sum(W)))^k
-    e <- sum(e - 1)/(k * (k - 1))/sum(W)
-  }
-  e
+  if (power == 0)return(Theil_L(X,W))
+  if (power == 1){return(Theil_T(X,W,zeroes))}else{
+    e <- W*(X/(sum(W/sum(W)*X)))^power
+    return(sum(e - 1)/(power * (power - 1))/sum(W))
+    }
 }
 
 
@@ -240,7 +241,7 @@ Kolm=function (X,W=rep(1,length(X)), parameter = 1, scale = "None")
 #'
 #' @rdname RicciSchutz
 #'
-#' @details In the case of an empirical distribution with n elements where y_{i} denotes the wealth of household i and \eqn{\overline{y}} the sample average, the Ricci and Schutz coefficient can be expressed as:
+#' @details In the case of an empirical distribution with n elements where \eqn{y_{i}} denotes the wealth of household \eqn{i} and \eqn{\overline{y}} the sample average, the Ricci and Schutz coefficient can be expressed as:
 #'          \deqn{RS =  \frac{1}{2n} \sum_{i=1}^{n} \frac{\mid y_{i} - \overline{y} \mid}{\overline{y}}}
 #'
 #'
@@ -256,8 +257,8 @@ Kolm=function (X,W=rep(1,length(X)), parameter = 1, scale = "None")
 #'
 #' data(Tourism)
 #' #Ricci and Schutz index for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' RicciSchutz(X,W)
 #'
 #'
@@ -266,7 +267,7 @@ RicciSchutz=function (X,W=rep(1,length(X)))
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
   d <- abs(X - (sum(W*X)/sum(W)))
@@ -308,8 +309,8 @@ RicciSchutz=function (X,W=rep(1,length(X)))
 #'
 #' data(Tourism)
 #' #Coefficient of variation for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' CoefVar(X,W)
 #'
 #'
@@ -318,7 +319,7 @@ CoefVar=function (X,W=rep(1,length(X)), square = FALSE)
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
   w.m <- sum(W*X)/sum(W)
@@ -333,6 +334,8 @@ CoefVar=function (X,W=rep(1,length(X)), square = FALSE)
 #'
 #' @param X is a data vector
 #' @param W is a vector of weights
+#' @param fast logical, if TRUE (default), Gini is calculated via matrix operations - fast but may cause memory allocation problems. If FALSE, Gini is calculated via vector operations - slower but with better memory allocation
+#' @param rounded.weights logical, may be run when fast=FALSE. If TRUE (default), Gini is calculated through alternative formula based on ordered X and integer weights. Choose it when dealing with memory allocation problems.
 #'
 #' @return The value of Gini coefficient.
 #'
@@ -353,21 +356,37 @@ CoefVar=function (X,W=rep(1,length(X)), square = FALSE)
 #'
 #' data(Tourism)
 #' #Gini coefficient for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Gini(X,W)
 #'
 #'
 #' @export
-Gini=function(X,W=rep(1,length(X)))
+Gini=function(X,W=rep(1,length(X)),fast=TRUE,rounded.weights=FALSE)
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
-  G=sum(abs(matrix(X,length(X),length(X),TRUE)-matrix(X,length(X),length(X),FALSE))*matrix(W,length(W),length(W),TRUE)*matrix(W,length(W),length(W),FALSE)/(2*sum(W)^2*(sum(W*X)/sum(W))))
+  if(fast){
+    W=W/max(W)
+    G=sum(abs(matrix(X,length(X),length(X),TRUE)-matrix(X,length(X),length(X),FALSE))*matrix(W,length(W),length(W),TRUE)*matrix(W,length(W),length(W),FALSE)/(2*sum(W)^2*(sum(W*X)/sum(W))))
+  }else{
+    partialSums=vector('double',length(X))
+    W=W/max(W)
+    for(i in 1:length(X)){partialSums[i]=sum(W[i]*W*abs(X[i]-X))}
+    G=sum(partialSums)/(2*sum(W)^2*(sum(W*X)/sum(W)))
+  }
   return(G)
+  if(rounded.weights){
+    W=W[order(X)];X=X[order(X)]
+    cumW=cumsum(W)
+    cumN=cumW*(cumW+1)/2
+    cumN=c(cumN[1],cumN[-1]-cumN[-length(cumN)])
+    G=(2*sum(cumN*X)/sum(W*X)-(sum(W)+1))/(sum(W))
+    return(G)
+  }
 }
 
 
@@ -383,7 +402,7 @@ Gini=function(X,W=rep(1,length(X)))
 #'
 #' @rdname Hoover
 #'
-#' @details Let x_{i} be the income of the i-th person and \eqn{\overline{x}} be the mean income. Then the Hoover index H is:
+#' @details Let \eqn{x_{i}} be the income of the i-th person and \eqn{\overline{x}} be the mean income. Then the Hoover index H is:
 #' \deqn{H={\frac {1}{2}}{\frac {\sum_{i}|x_{i}-{\overline{x}}|}{\sum_{i}x_{i}}}}
 #'
 #'
@@ -399,8 +418,8 @@ Gini=function(X,W=rep(1,length(X)))
 #'
 #' data(Tourism)
 #' #Hoover index for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Hoover(X,W)
 #'
 #'
@@ -409,7 +428,7 @@ Hoover=function(X,W=rep(1,length(X)))
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
   H=(1/2)*(sum(W*abs(X - (sum(W*X)/sum(W))))/sum(X*W))
@@ -447,8 +466,8 @@ Hoover=function(X,W=rep(1,length(X)))
 #'
 #' data(Tourism)
 #' #Leti index for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Leti(X,W)
 #'
 #'
@@ -510,8 +529,8 @@ Leti=function(X,W=rep(1,length(X)),norm=T)
 #'
 #' data(Tourism)
 #' #Jenkins, Cowell and Flachaire coefficients for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Jenkins(X,W)
 #'
 #'
@@ -520,7 +539,7 @@ Jenkins=function(X,W=rep(1,length(X)), alfa=0.8)
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
   if(length(unique(X))==1)return(0)
   tab=aggregate(W,by=list(X),FUN=sum)
@@ -590,8 +609,8 @@ Jenkins=function(X,W=rep(1,length(X)), alfa=0.8)
 #'
 #' data(Tourism)
 #' #Palma index for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Palma(X,W)
 #'
 #'
@@ -606,20 +625,8 @@ Palma=function(X,W=rep(1,length(X)))
   if(length(unique(X))==1)return(1)
   W=W[order(X)];X=X[order(X)]
   Fx=(cumsum(W)/sum(W))
-  nominator=sum(X[which(Fx>=0.9)])
-  denominator=ifelse(min(Fx)<=0.4,sum(X[which(Fx<=0.4)]),X[1])
-  # tab=aggregate(W,by=list(X),FUN=sum)
-  # Fx=(cumsum(tab$x)/sum(tab$x))
-  # SW=cumsum(tab$x)
-  # a=which(Fx<0.4)
-  # if(length(a)!=0){A=max(a)
-  # b=floor(sum(tab$x)*0.4)-SW[max(a)]}else{A=0
-  # b=floor(sum(tab$x)*0.4)}
-  # c=which(Fx<0.9)
-  # if(length(c)!=0){C=max(c)
-  # d=tab$x[max(c)+1]-(floor(sum(tab$x)*0.9)-SW[max(c)])}else{C=0
-  # d=tab$x[1]-(floor(sum(tab$x)*0.9))}
-  # Palma=(sum(tab$Group.1[-c(c,C+1)]*tab$x[-c(c,C+1)])+tab$Group.1[C+1]*d)/(sum(tab$Group.1[a]*tab$x[a])+tab$Group.1[A+1]*b)
+  nominator = sum(W*X)-LowerSum(X,W,0.9)
+  denominator = LowerSum(X,W,0.4)
   Palma=nominator/denominator
   return(Palma)
 }
@@ -657,8 +664,8 @@ Palma=function(X,W=rep(1,length(X)))
 #'
 #' data(Tourism)
 #' #Prop20_20 proportion for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Prop20_20(X,W)
 #'
 #'
@@ -672,22 +679,8 @@ Prop20_20=function(X,W=rep(1,length(X)))
   if(length(unique(X))==1)return(0)
   W=W[order(X)];X=X[order(X)]
   Fx=(cumsum(W)/sum(W))
-  nominator=sum(X[which(Fx>=0.8)])
-  denominator=ifelse(min(Fx)<=0.2,sum(X[which(Fx<=0.2)]),X[1])
-
-  # W=aggregate(W,by=list(X),FUN=sum)
-  # Fx=(cumsum(tab$x)/sum(tab$x))
-  # SW=cumsum(tab$x)
-  # a=which(Fx<0.2)
-  # a=which(Fx<0.2)
-  # if(length(a)!=0){A=max(a)
-  # b=floor(sum(tab$x)*0.2)-SW[max(a)]}else{A=0
-  # b=floor(sum(tab$x)*0.2)}
-  # c=which(Fx<0.8)
-  # if(length(c)!=0){C=max(c)
-  # d=tab$x[max(c)+1]-(floor(sum(tab$x)*0.8)-SW[max(c)])}else{C=0
-  # d=tab$x[1]-(floor(sum(tab$x)*0.8))}
-  # Prop20_20=(sum(tab$Group.1[-c(c,C+1)]*tab$x[-c(c,C+1)])+tab$Group.1[C+1]*d)/(sum(tab$Group.1[a]*tab$x[a])+tab$Group.1[A+1]*b)
+  nominator = sum(W*X)-LowerSum(X,W,0.8)
+  denominator = LowerSum(X,W,0.2)
   Prop20_20=nominator/denominator
   return(Prop20_20)
 }
@@ -698,14 +691,14 @@ Prop20_20=function(X,W=rep(1,length(X)))
 #'
 #' @param X is a data vector
 #' @param W is a vector of weights
-#'
 #' @return The value of Theil_L coefficient.
 #'
 #' @rdname Theil_L
 #'
 #' @details Theil L index is defined as:
-#'   \deqn{T_{L} =  T_{\alpha=0} =  \frac{1}{N} \sum_{i=1}^N ln \big(\frac{\mu }{x_{i}} \big)}
-#'   where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
+#'          \deqn{T_{L} =  T_{\alpha=0} =  \frac{1}{N} \sum_{i=1}^N ln \big(\frac{\mu }{x_{i}} \big)}
+#'          where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
+#'          Theil L index can be computed only for positive values. By default, this functions discard zero X's and corresponding weights.
 #'
 #' @references Serebrenik A., van den Brand M.: Theil index for aggregation of software metrics values. 26th IEEE International Conference on Software Maintenance. IEEE Computer Society.
 #' @references Conceição P., Ferreira P.: (2000) The Young Person’s Guide to the Theil Index: Suggesting Intuitive Interpretations and Exploring Analytical Applications
@@ -720,8 +713,8 @@ Prop20_20=function(X,W=rep(1,length(X)))
 #'
 #' data(Tourism)
 #' # Theil L coefficient for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Theil_L(X,W)
 #'
 #'
@@ -731,9 +724,11 @@ Theil_L=function(X,W=rep(1,length(X)))
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
-  return(1/sum(W)*sum(W*log((sum(W*X)/sum(W))/X)))
+  ind=which(X>0);W=W[ind];X=X[ind]
+  weigthed.mean=sum((W/sum(W)) * X)
+  return(1/sum(W)*sum(W*log(weigthed.mean/X)))
 }
 
 
@@ -744,6 +739,7 @@ Theil_L=function(X,W=rep(1,length(X)))
 #'
 #' @param X is a data vector
 #' @param W is a vector of weights
+#' @param zeroes defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Details for more.
 #'
 #' @return The value of `Theil_T` coefficient.
 #'
@@ -752,6 +748,11 @@ Theil_L=function(X,W=rep(1,length(X)))
 #' @details Theil T index is defined as:
 #'          \deqn{T_{T} =  T_{\alpha=1} =  \frac{1}{N}  \sum_{i=1}^N  \frac{ x_{i} }{\mu} ln \big( \frac{ x_{i} }{\mu} \big)}
 #'          where \deqn{\mu = \frac{1}{N} \sum_{i=1}^N x_{i}}
+#'          Formally, Theil index is defined for positive values due to logarithms.
+#'          Nevertheless, in data analysis zero values may occur.
+#'          There are two way we can deal with them.
+#'          Option "remove" discard these X's and corresponding weights.
+#'          Option "include" puts \eqn{0\log{0=}0} due to limiting property of \eqn{p\log{p}} in zero preserving zero value in dataset.
 #'
 #' @references Serebrenik A., van den Brand M.: Theil index for aggregation of software metrics values. 26th IEEE International Conference on Software Maintenance. IEEE Computer Society.
 #' @references Conceição P., Ferreira P.: (2000) The Young Person’s Guide to the Theil Index: Suggesting Intuitive Interpretations and Exploring Analytical Applications
@@ -766,21 +767,29 @@ Theil_L=function(X,W=rep(1,length(X)))
 #'
 #' data(Tourism)
 #' # Theil T coefficient for Total expenditure with sample weights
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' Theil_T(X,W)
 #'
 #'
 #'
 #' @export
-Theil_T=function(X,W=rep(1,length(X)))
+Theil_T=function(X,W=rep(1,length(X)),zeroes='include')
 {
   ind=which(!is.na(W) & !is.na(X))
   if(length(ind)==0)return('Input with NAs only')
-  W=W[ind];X=X[ind]
+  W=W[ind];X=X[ind];W=W/max(W);X=X/max(X)
   if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
-  return(1/sum(W)*sum(W*(X/(sum(W*X)/sum(W))*log(X/(sum(W*X)/sum(W))))))
+  if(zeroes=='remove'){ind=which(X>0);W=W[ind];X=X[ind]
+  weigthed.mean=sum((W/sum(W)) * X)
+  return(1/sum(W) * sum(W * (X/weigthed.mean * log(X/weigthed.mean))))}else{
+  weigthed.mean=sum((W/sum(W)) * X)
+  logs=X/weigthed.mean * log(X/weigthed.mean);logs[is.na(logs)]=0
+  return(1/sum(W)*sum(W*logs))
+  }
 }
+
+
 
 #' @title Abul Naga and Yalcin index
 #'
@@ -987,6 +996,88 @@ medianf=function(X,W=rep(1,length(X)))
   return(medianf=tab$Group.1[m])
 }
 
+#' @title Sample quantile for weighted data
+#'
+#' @description Computes quantile derived for the given probability taking into account weights.
+#'
+#' @param X is a numeric data vector
+#' @param W is a vector of weights
+#' @param p is a probability to derive corresponding quantile
+#'
+#' @importFrom stats aggregate
+#'
+#' @return The quantile for weighted data.
+#'
+#' @rdname Quantile
+#'
+#' @details Linear interpolation is applied to deal with a frequency distribution.
+#'
+#' @examples
+#' # Compare weighted and unweighted result
+#' X=1:10
+#' W=10:1
+#' Quantile(X,p=0.5)
+#' Quantile(X,W,p=0.5)
+#'
+#' @export
+#Quantile of weighted data
+Quantile=function(X,W=rep(1,length(X)),p=0.5)
+{
+  ind=which(!is.na(W) & !is.na(X))
+  if(length(ind)==0)return('Input with NAs only')
+  W=W[ind];X=X[ind]
+  if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
+  if(!(p>=0 & p<=1))return('p must be a value between 0 and 1')
+  W=W[order(X)];X=X[order(X)]
+  Fx=(cumsum(W)/sum(W))
+  index=which.max(Fx>=p)
+  q=ifelse(index>1,X[index],X[1])
+  return(q)
+}
+
+#' @title Weighted lower sum
+#'
+#' @description Computes weighted sum of values not greater then a quantile derived for the given probability.
+#'
+#' @param X is a numeric data vector
+#' @param W is a vector of weights
+#' @param p is a probability to derive corresponding quantile
+#'
+#' @importFrom stats aggregate
+#'
+#' @return The weighted sum of values not greater then a quantile.
+#'
+#' @rdname LowerSum
+#'
+#' @details Calculates  weighted sum of values not greater then a quantile derived for the given probability based on cumulative distribution. Linear interpolation is applied to deal with a frequency distribution.
+#'
+#' @examples
+#' # Suppose X represents incomes. Compare total incomes with incomes of poorer half of population.
+#' X=1:10
+#' W=10:1
+#' sum(W*X)
+#' LowerSum(X,W,0.5)
+#'
+#'
+#' @export
+#Weighted lower sum
+LowerSum=function(X,W=rep(1,length(X)),p=0.5)
+{
+  ind=which(!is.na(W) & !is.na(X))
+  if(length(ind)==0)return('Input with NAs only')
+  W=W[ind];X=X[ind]
+  if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
+  if(!(p>=0 & p<=1))return('p must be a value between 0 and 1')
+  W=W[order(X)];X=X[order(X)]
+  Fx=(cumsum(W)/sum(W))
+  index=which.max(Fx>=p)
+  lowerSum=ifelse(index>1,
+                  sum(W[1:(index - 1)]*X[1:(index - 1)])+(p - Fx[index - 1]) / (Fx[index] - Fx[index - 1])*sum(W[(index)]*X[(index)]),
+                  p/Fx[1]*sum(W[1]*X[1])
+  )
+  return(lowerSum)
+}
+
 
 #' @title Sample survey on trips
 #' @description Data from sample survey on trips conducted in Polish households.
@@ -994,12 +1085,18 @@ medianf=function(X,W=rep(1,length(X)))
 #' @keywords datasets
 #' @name Tourism
 #' @usage data(Tourism)
-#' @format A data frame with 384 observations of 14 variables
+#' @format A data frame with 5319 observations of 17 variables
 #'\itemize{
 #' \item Year
-#' \item Group of countries
+#' \item Country
+#' \item Country code
+#' \item World region
 #' \item Purpose of trip
 #' \item Accommodation type
+#' \item Number of trip's participants
+#' \item Nights spent
+#' \item Travel agency (organiser)
+#' \item Sample weight
 #' \item Total expenditure
 #' \item Expenditure for organiser
 #' \item Private expenditure
@@ -1007,9 +1104,6 @@ medianf=function(X,W=rep(1,length(X)))
 #' \item Expenditure on restaurants & café
 #' \item Expenditure on transport
 #' \item Expenditure on commodities
-#' \item Number of trip's participants
-#' \item Nights spent
-#' \item Sample weight
 #'}
 #' @details Answers were modified due to disclosure control. Data presents only part of full database.
 NULL
@@ -1050,7 +1144,7 @@ NULL
 #' \item Weight. Sample weight for each household
 #'}
 #' @details Questions are on Likert scale: 1 - the worst assessment, 5 - the best assessment.
-#' Only 23 question were selected out of over 100 questions.
+#' Only 23 questions were selected out of over 100 questions.
 #' Answers were modified due to disclosure control.
 NULL
 

@@ -32,8 +32,8 @@ Palma(X,W)
 
 data(Tourism)
 #Palma index for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Palma(X,W)
 
 

@@ -33,8 +33,8 @@ CoefVar(X,W)
 
 data(Tourism)
 #Coefficient of variation for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 CoefVar(X,W)
 
 

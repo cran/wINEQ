@@ -4,14 +4,16 @@
 \alias{Entropy}
 \title{Generalized entropy index}
 \usage{
-Entropy(X, W = rep(1, length(X)), parameter = 0.5)
+Entropy(X, W = rep(1, length(X)), power = 0.5, zeroes = "include")
 }
 \arguments{
 \item{X}{is a data vector}
 
 \item{W}{is a vector of weights}
 
-\item{parameter}{is a entropy parameter}
+\item{power}{is a entropy parameter}
+
+\item{zeroes}{defines what to do with zeroes in the data vector. Possible options are "remove" and "include". See Details for more.}
 }
 \value{
 The value of generalized entropy index
@@ -24,6 +26,11 @@ Entropy coefficient with respect to parameter \eqn{\alpha} is equal to Theil_L(X
 is equal to Theil_T(X,W) whenever \eqn{\alpha=1}, and whenever \eqn{\alpha \in (0,1)} we have
 \deqn{GE(\alpha) = \frac{1}{\alpha(\alpha-1)W}\sum_{i=1}^{n}w_{i}\left(\left(\frac{x_{i}}{\mu}\right)^\alpha-1\right)}
 where \eqn{W} is a sum of weights and \eqn{\mu} is the arithmetic mean of \eqn{x_{1},...,x_{n}}.
+Entropy coefficient is not well-defined for data vector with zero values whenever parameter is zero or one.
+In such case, entropy index coincides with the definition of Theil L index and Theil T index, respectively, and entropy index is calculated with corresponding Theil function.
+Theil L always removes zeroes. Theil T enables two ways to deal with zeroes by parameter zeroes.
+Option "remove" discard these X's and corresponding weights. Works for power>0.
+Option "include" puts \eqn{0\log{0=}0} due to limiting property of \eqn{p\log{p}} in zero preserving zero value in dataset. It is valid only for Theil T index, that is power=0.
 }
 \examples{
 # Compare weighted and unweighted result
@@ -34,8 +41,8 @@ Entropy(X,W)
 
 data(Tourism)
 # Generalized entropy index for Total expenditure with sample weights
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 Entropy(X,W)
 
 
