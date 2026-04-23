@@ -277,6 +277,52 @@ RicciSchutz=function (X,W=rep(1,length(X)))
 
 
 
+#' @title CEO-to-Worker Pay Ratio (in general: max-to-median)
+#'
+#' @description CEO-to-Worker Pay Ratio - it is a pay ratio between CEO pay and median employee pay.
+#'
+#' @param X is a data vector
+#' @param W is a vector of weights
+#'
+#' @importFrom stats aggregate
+#'
+#' @return The value of maximum-to-median ratio, in particular: CEO-to-Worker Pay Ratio for salary data.
+#'
+#' @rdname CEO_to_Worker
+#'
+#' @details CEO-to-Worker Pay Ratio is generalized to any numeric data vector by the following formula:
+#'          \deqn{CEO_to_Worker =\frac{H}{L}}
+#'          where \eqn{H} is the maximum value and
+#'          \eqn{L} is the median value.
+#'          Since 2018, U.S. publicly held corporations have had to annually report
+#'          the ratio between their CEO and median worker compensation.
+#'
+#' @examples
+#' # Simple example for fake salary data
+#' X=seq.int(5000,15000,1000)
+#' W=11:1
+#' CEO_to_Worker(X,W)
+#'
+#' data(Tourism)
+#' # Max-to-median (CEO_to_Worker) for total expenditure with sample weights
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
+#' CEO_to_Worker(X,W)
+#'
+#'
+#'
+#' @export
+CEO_to_Worker=function(X,W=rep(1,length(X)))
+{
+  ind=which(!is.na(W) & !is.na(X))
+  if(length(ind)==0)return('Input with NAs only')
+  W=W[ind];X=X[ind]
+  if(!is.numeric(X) | !is.numeric(W))return('X and W must be numeric')
+  if(length(unique(X))==1)return(1)
+  return(max(X)/Quantile(X,W,p = 0.5))
+}
+
+
 
 #' @title Coefficient of Variation
 #'

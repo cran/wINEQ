@@ -73,8 +73,8 @@ ineq.weighted(X,W)
 
 data(Tourism)
 # Results for Total expenditure with sample weights:
-X=Tourism$`Total expenditure`
-W=Tourism$`Sample weight`
+X=Tourism$Total_expenditure
+W=Tourism$Sample_weight
 ineq.weighted(X)
 ineq.weighted(X,W)
 

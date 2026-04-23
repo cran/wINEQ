@@ -3,6 +3,21 @@
 
 # *News*
 
+# wINEQ 1.2.2 _(2026-04-23)_
+
+## New features
+
+* Package has been enriched with a new measure CEO-to-Worker Pay Ratio. It is dedicated to measure a wage gap between CEO and employees.
+* Function `CEO_to_Worker` in a fact can be used to capture such inequality for any numeric data taking a ratio of maximum to median.
+
+## Future works
+
+* new inequality measures
+* vignette presenting an example workflow with our package
+
+
+
+
 # wINEQ 1.2.1 _(2024-08-03)_
 
 ## New features
@@ -20,11 +35,6 @@
 
 * Function `Gini` have an alternative computing algorithm: slower but memory saving. 
 
-## Future works
-
-* new inequality measures
-* vignette presenting an example workflow with our package
-* enhanced dataset with tourists' expenditures on trips
 
 
 

@@ -38,8 +38,8 @@
 #'
 #' data(Tourism)
 #' # Results for Total expenditure with sample weights:
-#' X=Tourism$`Total expenditure`
-#' W=Tourism$`Sample weight`
+#' X=Tourism$Total_expenditure
+#' W=Tourism$Sample_weight
 #' ineq.weighted(X)
 #' ineq.weighted(X,W)
 #'
@@ -100,6 +100,7 @@ ineq.weighted=function(
         RicciSchutz=RicciSchutz(X,W),
         Prop20_20=Prop20_20(X,W),
         Palma=Palma(X,W),
+        CEO_to_Worker=CEO_to_Worker(X,W),
         Jenkins=Jenkins(X,W,Jenkins.alfa)[,1],
         Cowell_and_Flachaire=Jenkins(X,W,Jenkins.alfa)[,2]
       ) %>% as.data.frame()
@@ -207,7 +208,7 @@ ineq.weighted.boot=function(X,
     }
   }
 
-  cols=ifelse(is.ordered(X),6,15)
+  cols=ifelse(is.ordered(X),6,16)
   Mb=matrix(0,nrow=B,ncol=cols) %>% as.data.frame()
 
   medians=vector('character',B)
